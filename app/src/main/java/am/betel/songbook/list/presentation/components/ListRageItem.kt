@@ -1,0 +1,120 @@
+package am.betel.songbook.list.presentation.components
+
+
+import am.betel.songbook.R
+import am.betel.songbook.common.presentation.ui.theme.Blue700
+import am.betel.songbook.common.presentation.ui.theme.FontBold
+import am.betel.songbook.common.presentation.ui.theme.FontBoldItalic
+import am.betel.songbook.common.presentation.ui.theme.FontRegular
+import am.betel.songbook.common.presentation.ui.theme.Shape16
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+@Composable
+fun ListRageItem(
+    modifier: Modifier = Modifier,
+    intRange: IntRange,
+    initialExpanded: Boolean = false,
+) {
+    var isExpanded by rememberSaveable { mutableStateOf(initialExpanded) }
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { isExpanded = !isExpanded },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_music),
+                contentDescription = null,
+                tint = Blue700
+            )
+
+            Text(
+                modifier = Modifier.weight(1f).padding(start = 8.dp),
+                text = "${intRange.first} - ${intRange.last}",
+                style = TextStyle(
+                    fontFamily = FontRegular,
+                    fontSize = 16.sp
+                )
+            )
+
+            IconButton(
+                onClick = { isExpanded = !isExpanded }) {
+                Icon(
+                    imageVector = if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                    contentDescription = null
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxWidth(),
+            visible = isExpanded
+        ) {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 0.5.dp,
+                        color = Color.Black,
+                        shape = Shape16
+                    )
+                    .padding(4.dp)
+                    .heightIn(
+                        min = 0.dp,
+                        max = 2000.dp
+                    ),
+                columns = GridCells.Fixed(4),
+            ) {
+                items(intRange.toList(), key = { it }) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = it.toString(),
+                            style = TextStyle(
+                                fontFamily = FontBold,
+                                fontSize = 15.sp
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
