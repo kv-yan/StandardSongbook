@@ -31,7 +31,7 @@ fun SongScreenNavigation(
             modifier = Modifier
                 .fillMaxSize(),
             navController = navController,
-            startDestination = SongsDestination.Saved
+            startDestination = SongsDestination.List
         ) {
             composable<SongsDestination.List> {
                 ListScreen(navigateToDetails = navigateToDetails)
@@ -47,5 +47,3 @@ fun SongScreenNavigation(
         it
     }
 }
-
-
