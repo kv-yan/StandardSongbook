@@ -1,6 +1,9 @@
 package am.betel.songbook
 
+import am.betel.songbook.details.data.di.detailsDataModule
+import am.betel.songbook.details.presentation.di.detailsPresentationModule
 import am.betel.songbook.list.presentation.di.songListPresentationModule
+import am.betel.songs.data.di.songsDataModule
 import am.betel.songs.presentation.worker.ImportSongsWorker
 import android.app.Application
 import androidx.work.BackoffPolicy
@@ -18,6 +21,10 @@ class Application : Application() {
             androidContext(this@Application)
             modules(
                 songListPresentationModule,
+                detailsDataModule,
+                detailsPresentationModule,
+                songsDataModule,
+
             )
         }
 

@@ -33,7 +33,12 @@ fun SongScreenNavigation(
             navController = navController,
             startDestination = SongsDestination.List
         ) {
-            composable<SongsDestination.List> {
+            composable<SongsDestination.List>(
+                enterTransition = null,
+                exitTransition = null,
+                popEnterTransition = null,
+                popExitTransition = null
+            ) {
                 ListScreen(navigateToDetails = navigateToDetails)
             }
             composable<SongsDestination.Search> { SearchScreen() }

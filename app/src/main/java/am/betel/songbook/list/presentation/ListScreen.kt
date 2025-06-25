@@ -114,7 +114,8 @@ fun ListScreen(
                     ListRageItem(
                         modifier = Modifier.fillMaxWidth(),
                         intRange = range,
-                        initialExpanded = index == 0
+                        initialExpanded = index == 0,
+                        navigateToDetails = navigateToDetails
                     )
                 }
             }
