@@ -11,6 +11,6 @@ sealed class SongsDestination(val route: String) {
     data object Search : SongsDestination("Որոնում")
 
     @Serializable
-    data object Saved : SongsDestination("Էջանշված")
+    data object Bookmark : SongsDestination("Էջանշված")
 }
 

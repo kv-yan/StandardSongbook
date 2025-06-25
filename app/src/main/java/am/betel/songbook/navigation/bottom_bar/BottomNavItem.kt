@@ -9,7 +9,7 @@ sealed class BottomNavItem(val iconResource: Int, val route: SongsDestination) {
     )
 
     data object ShopScreen : BottomNavItem(
-        iconResource = R.drawable.ic_bookmark, route = SongsDestination.Saved
+        iconResource = R.drawable.ic_bookmark, route = SongsDestination.Bookmark
     )
 
     data object AddEventScreen : BottomNavItem(

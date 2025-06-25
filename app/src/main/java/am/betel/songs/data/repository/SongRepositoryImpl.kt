@@ -2,7 +2,6 @@ package am.betel.songs.data.repository
 
 import am.betel.songs.data.dao.FavoriteSongDao
 import am.betel.songs.data.dao.SongDao
-import am.betel.songs.data.helper.getTitle
 import am.betel.songs.data.helper.toFavoriteSongEntity
 import am.betel.songs.data.helper.toSong
 import am.betel.songs.domain.model.Song
@@ -11,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class SongRepositoryImpl(
     private val songDao: SongDao,
@@ -25,11 +25,10 @@ class SongRepositoryImpl(
         emit(songDao.searchSongsByText(query).map { it.toSong() })
     }.flowOn(Dispatchers.IO)
 
-    override fun getFavoriteSongs(): Flow<List<Song>> = flow {
-        emit(favoriteSongDao.getFavoriteSongs().toSong())
-    }.flowOn(Dispatchers.IO)
+    override fun getFavoriteSongs(): Flow<List<Song>> =
+        favoriteSongDao.getFavoriteSongs().map { it.map { it.toSong() } }
 
-    override  suspend fun addToFavorites(song: Song) {
+    override suspend fun addToFavorites(song: Song) {
         favoriteSongDao.addToFavorites(song.toFavoriteSongEntity())
     }
 
@@ -38,8 +37,7 @@ class SongRepositoryImpl(
     }
 
     override fun isFavorite(song: Song): Flow<Boolean> = flow {
-       val result = favoriteSongDao.isFavorite(song.id)
-        println("is favorite $result :: ${song.getTitle()}")
+        val result = favoriteSongDao.isFavorite(song.id)
         emit(result)
     }.flowOn(Dispatchers.IO)
 }

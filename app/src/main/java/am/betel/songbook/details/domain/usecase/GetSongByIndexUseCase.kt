@@ -4,5 +4,5 @@ import am.betel.songs.domain.model.Song
 import kotlinx.coroutines.flow.Flow
 
 interface GetSongByIndexUseCase {
-    operator fun invoke(songIndex: String): Flow<Song?>
+    operator fun invoke(songIndex: Int): Flow<Song?>
 }

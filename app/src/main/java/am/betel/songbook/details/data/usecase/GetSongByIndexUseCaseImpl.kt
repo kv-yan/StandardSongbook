@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetSongByIndexUseCaseImpl(
     private val songRepository: SongRepository,
 ) : GetSongByIndexUseCase {
-    override fun invoke(songIndex: String): Flow<Song?> =
-        songRepository.getSongBySongNumber(songIndex)
+    override fun invoke(songIndex: Int): Flow<Song?> =
+        songRepository.getSongBySongNumber(songIndex.toString())
 
 }

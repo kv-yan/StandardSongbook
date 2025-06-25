@@ -3,7 +3,6 @@ package am.betel.songs.presentation.worker
 import am.betel.songs.data.database.AppDatabase
 import am.betel.songs.data.entity.SongEntity
 import android.content.Context
-import android.os.Build
 import android.text.Html
 import androidx.room.Room
 import androidx.work.CoroutineWorker
@@ -13,7 +12,7 @@ import com.google.gson.reflect.TypeToken
 
 class ImportSongsWorker(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -41,28 +40,21 @@ class ImportSongsWorker(
             }
 
             songDao.insertAll(cleanSongs)
-            println(
-                "Imported ${cleanSongs.size} songs"
-            )
 
             Result.success()
         } catch (e: Exception) {
-            println("Error importing songs: ${e}")
+            e.printStackTrace()
             Result.failure()
         }
     }
 
     private fun cleanHtmlText(input: String): String {
-        val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(input, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            Html.fromHtml(input)
-        }
+        val html = Html.fromHtml(input, Html.FROM_HTML_MODE_COMPACT)
         return html.toString().trim()
     }
 
     data class SongRaw(
         val songNumber: String,
-        val songWords: String
+        val songWords: String,
     )
 }

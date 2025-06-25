@@ -37,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ListScreen(
     modifier: Modifier = Modifier,
     songbookListViewModel: SongbookListViewModel = koinViewModel(),
-    navigateToDetails: (String) -> Unit = {},
+    navigateToDetails: (Int) -> Unit = {},
 ) {
     val songsIntRange by songbookListViewModel.songsCount.collectAsState()
     val searchQuery by songbookListViewModel.searchQuery.collectAsState()
@@ -67,7 +67,7 @@ fun ListScreen(
                     keyboardType = KeyboardType.Number
                 ),
                 keyboardActions = KeyboardActions(onSearch = {
-                    navigateToDetails(searchQuery)
+                    navigateToDetails(searchQuery.toInt())
                 }),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Black,
@@ -81,7 +81,7 @@ fun ListScreen(
                     cursorColor = Blue700,
                     focusedLabelColor = Blue700,
 
-                ),
+                    ),
                 label = {
                     Text(
                         text = "Գրեք համարը",
@@ -94,7 +94,7 @@ fun ListScreen(
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = if (searchQuery.isNotEmpty()) Blue700 else Color.LightGray,
                         ),
-                        onClick = { navigateToDetails(searchQuery) }) {
+                        onClick = { navigateToDetails(searchQuery.toInt()) }) {
                         Text("Գտնել")
                     }
                 }

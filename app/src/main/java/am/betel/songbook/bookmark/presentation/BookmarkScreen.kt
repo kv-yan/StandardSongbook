@@ -4,6 +4,9 @@ import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,7 +29,7 @@ fun BookmarkScreen(
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = koinViewModel(),
     onBackClick: () -> Unit = {},
-    navigateToDetails: (String) -> Unit = {},
+    navigateToDetails: (Int) -> Unit = {},
 ) {
 
     val songs by viewModel.favoriteSongs.collectAsState()
@@ -58,11 +62,23 @@ fun BookmarkScreen(
                 }
             )
         }
-    ) {
-        it
-
-        Text(
-            text = "$songs",
-        )
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            items(
+                items = songs,
+                key = { it.id }
+            ) { song ->
+                BookmarkedSongItem(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { navigateToDetails(it) },
+                    song = song,
+                    onRemoveClick = { viewModel.removeFavoriteSong(song) }
+                )
+            }
+        }
     }
 }

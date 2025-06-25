@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun SongScreenNavigation(
     modifier: Modifier = Modifier,
-    navigateToDetails: (String) -> Unit = {},
+    navigateToDetails: (Int) -> Unit = {},
 ) {
     val navController = rememberNavController()
 
@@ -26,7 +26,7 @@ fun SongScreenNavigation(
         bottomBar = {
             BottomNavigationBar(navController = navController)
         }
-    ) {
+    ) { innerPadding ->
         NavHost(
             modifier = Modifier
                 .fillMaxSize(),
@@ -42,13 +42,14 @@ fun SongScreenNavigation(
                 ListScreen(navigateToDetails = navigateToDetails)
             }
             composable<SongsDestination.Search> { SearchScreen() }
-            composable<SongsDestination.Saved> {
+            composable<SongsDestination.Bookmark> {
                 BookmarkScreen(
                     navigateToDetails = navigateToDetails,
                     onBackClick = { navController.popBackStack() }
                 )
             }
         }
-        it
+
+        innerPadding
     }
 }

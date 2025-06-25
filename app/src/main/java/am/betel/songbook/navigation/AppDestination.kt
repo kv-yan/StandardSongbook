@@ -8,5 +8,5 @@ sealed class AppDestination {
     data object SongScreen : AppDestination()
 
     @Serializable
-    data class Details(val id: String) : AppDestination()
+    data class Details(val id: Int) : AppDestination()
 }

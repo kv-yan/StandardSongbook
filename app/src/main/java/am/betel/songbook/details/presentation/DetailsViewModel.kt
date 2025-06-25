@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
-    songIndex: String,
+    songIndex: Int,
     private val getSongByIndexUseCase: GetSongByIndexUseCase,
     private val addToFavoritesUseCaseImpl: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
@@ -36,7 +36,7 @@ class DetailsViewModel(
     private val _currentSong = MutableStateFlow<Song?>(Song())
     val currentSongs = _currentSong.asStateFlow()
 
-    private val _currentIndex = MutableStateFlow(songIndex.toInt())
+    private val _currentIndex = MutableStateFlow(songIndex)
 
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite = _isFavorite.asStateFlow()
@@ -51,7 +51,7 @@ class DetailsViewModel(
         }.launchIn(viewModelScope)
     }
 
-    private fun getSongByIndex(index: String) {
+    private fun getSongByIndex(index: Int) {
         getSongByIndexUseCase(index).onEach {
             _currentSong.value = it
             it?.let { song -> observeFavoriteState(song) }
@@ -61,14 +61,14 @@ class DetailsViewModel(
     fun loadNextSong() {
         if (_currentIndex.value < MAX_INDEX) {
             _currentIndex.value++
-            getSongByIndex(_currentIndex.value.toString())
+            getSongByIndex(_currentIndex.value)
         }
     }
 
     fun loadPrevSong() {
         if (_currentIndex.value > MIN_INDEX) {
             _currentIndex.value--
-            getSongByIndex(_currentIndex.value.toString())
+            getSongByIndex(_currentIndex.value)
         }
     }
 

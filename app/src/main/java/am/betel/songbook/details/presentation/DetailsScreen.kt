@@ -45,7 +45,7 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    index: String,
+    index: Int,
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = getViewModel { parametersOf(index) },
     onBackClick: () -> Unit = {},
@@ -83,7 +83,7 @@ fun DetailsScreen(
                     containerColor = Color.White
                 ), title = {
                     Text(
-                        text = "Երգ ${currentSongs?.songNumber}",
+                        text = stringResource(R.string.song_number, currentSongs?.songNumber ?: 0),
                         fontFamily = FontBold,
                         fontStyle = FontStyle.Normal,
                         fontSize = 20.sp,
@@ -158,7 +158,8 @@ fun DetailsScreen(
                 overflow = TextOverflow.Ellipsis
             )
 
-            val words = Html.fromHtml(currentSongs?.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
+            val words =
+                Html.fromHtml(currentSongs?.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
 
             SwipeableSongText(
                 words = words,

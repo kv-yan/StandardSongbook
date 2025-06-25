@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteSongDao {
@@ -17,9 +18,6 @@ interface FavoriteSongDao {
     @Delete
     suspend fun removeFromFavorites(favorite: FavoriteSongEntity)
 
-    @Query("SELECT * FROM FavoriteSongs")
-    suspend fun getAllFavorites(): List<FavoriteSongEntity>
-
     @Query("SELECT EXISTS(SELECT 1 FROM FavoriteSongs WHERE songId = :songId)")
     suspend fun isFavorite(songId: Int): Boolean
 
@@ -29,5 +27,5 @@ interface FavoriteSongDao {
         INNER JOIN FavoriteSongs f ON s.id = f.songId
     """
     )
-    suspend fun getFavoriteSongs(): List<SongEntity>
+    fun getFavoriteSongs(): Flow<List<SongEntity>>
 }

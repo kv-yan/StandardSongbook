@@ -46,7 +46,7 @@ fun ListRageItem(
     modifier: Modifier = Modifier,
     intRange: IntRange,
     initialExpanded: Boolean = false,
-    navigateToDetails: (String) -> Unit = {},
+    navigateToDetails: (Int) -> Unit = {},
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(initialExpanded) }
     Column(modifier = modifier.fillMaxWidth()) {
@@ -106,7 +106,7 @@ fun ListRageItem(
                     TextButton(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        onClick = { navigateToDetails(it.toString()) },
+                        onClick = { navigateToDetails(it) },
                         shape = RoundedCornerShape(0),
                         colors =
                             ButtonDefaults.buttonColors(
