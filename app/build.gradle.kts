@@ -39,6 +39,13 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src\\main\\assets", "src\\main\\assets")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -81,4 +88,10 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     // system ui controller
     implementation(libs.accompanist.systemuicontroller)
+
+    // worker
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // gson
+    implementation (libs.gson)
 }
