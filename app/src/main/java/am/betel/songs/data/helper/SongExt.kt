@@ -2,6 +2,7 @@ package am.betel.songs.data.helper
 
 import am.betel.songs.data.entity.SongEntity
 import am.betel.songs.domain.model.Song
+import android.text.Html
 
 fun SongEntity.toSong(): Song {
     return Song(
@@ -20,7 +21,9 @@ fun Song.toSongEntity(): SongEntity {
 }
 
 fun Song.getTitle(): String {
-    return this.songWords.lineSequence()
+
+    val text = Html.fromHtml(this.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
+    return text.lineSequence()
         .map { it.trim() }
         .firstOrNull { it.isNotEmpty() }
         ?: ""

@@ -28,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -46,18 +45,13 @@ fun DetailsScreen(
 ) {
     val currentSongs by viewModel.currentSongs.collectAsState()
 
-
     val verticalScrollState = rememberScrollState()
     Scaffold(
-        modifier = modifier
-            .fillMaxSize(),
-        containerColor = Color.White,
-        topBar = {
+        modifier = modifier.fillMaxSize(), containerColor = Color.White, topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White
-                ),
-                title = {
+                ), title = {
                     Text(
                         text = "Երգ ${currentSongs?.songNumber}",
                         fontFamily = FontBold,
@@ -66,8 +60,7 @@ fun DetailsScreen(
                         color = Blue700
                     )
 
-                },
-                navigationIcon = {
+                }, navigationIcon = {
                     IconButton(
                         onClick = onBackClick
                     ) {
@@ -77,12 +70,10 @@ fun DetailsScreen(
                             tint = Blue700
                         )
                     }
-                },
-                actions = {
+                }, actions = {
 
                     IconButton(
-                        onClick = { /*TODO*/ }
-                    ) {
+                        onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Rounded.FavoriteBorder,
                             contentDescription = null,
@@ -91,18 +82,15 @@ fun DetailsScreen(
                     }
 
                     IconButton(
-                        onClick = { /*TODO*/ }
-                    ) {
+                        onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = null,
                             tint = Blue700
                         )
                     }
-                }
-            )
-        }
-    ) {
+                })
+        }) {
 
         Column(
             modifier = Modifier
@@ -121,15 +109,12 @@ fun DetailsScreen(
             )
 
             val words =
-                Html.fromHtml(currentSongs?.songWords, Html.FROM_HTML_MODE_COMPACT)
-                    .toString()
+                Html.fromHtml(currentSongs?.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
 
-            Text(
-                words,
-                fontFamily = FontRegular,
-                fontStyle = FontStyle.Normal,
-                fontSize = 16.sp,
-                color = Color.Black
+            SwipeableSongText(
+                words = words,
+                onNextSong = viewModel::loadNextSong,
+                onPrevSong = viewModel::loadPrevSong
             )
         }
     }

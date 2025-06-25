@@ -74,10 +74,13 @@ fun ListScreen(
                     unfocusedTextColor = Color.Black,
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Black,
+                    focusedIndicatorColor = Blue700,
                     unfocusedIndicatorColor = Color.LightGray,
                     focusedTrailingIconColor = Color.Black,
-                    unfocusedTrailingIconColor = Color.LightGray
+                    unfocusedTrailingIconColor = Color.LightGray,
+                    cursorColor = Blue700,
+                    focusedLabelColor = Blue700,
+
                 ),
                 label = {
                     Text(
@@ -114,7 +117,7 @@ fun ListScreen(
                     ListRageItem(
                         modifier = Modifier.fillMaxWidth(),
                         intRange = range,
-                        initialExpanded = index == 0,
+                        initialExpanded = false,
                         navigateToDetails = navigateToDetails
                     )
                 }
