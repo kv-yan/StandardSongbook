@@ -3,12 +3,15 @@ package am.betel.songbook.details.presentation
 import am.betel.songbook.bookmark.domain.usecase.AddToFavoritesUseCase
 import am.betel.songbook.bookmark.domain.usecase.IsFavoriteUseCase
 import am.betel.songbook.bookmark.domain.usecase.RemoveFromFavoritesUseCase
+import am.betel.songbook.common.presentation.ui.state.UiEvent
 import am.betel.songbook.details.domain.usecase.GetSongByIndexUseCase
 import am.betel.songs.domain.model.Song
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -28,6 +31,8 @@ class DetailsViewModel(
         private const val MAX_INDEX = 1000
     }
 
+    private var favoriteJob: Job? = null
+
     private val _currentSong = MutableStateFlow<Song?>(Song())
     val currentSongs = _currentSong.asStateFlow()
 
@@ -35,6 +40,9 @@ class DetailsViewModel(
 
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite = _isFavorite.asStateFlow()
+
+    private val _eventFlow = MutableSharedFlow<UiEvent?>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     init {
         getSongByIndexUseCase(songIndex).onEach {
@@ -70,17 +78,18 @@ class DetailsViewModel(
         viewModelScope.launch {
             if (_isFavorite.value) {
                 removeFromFavoritesUseCase(song)
+                _eventFlow.emit(UiEvent.ShowMessage("Էջանշումը հանվել է"))
             } else {
                 addToFavoritesUseCaseImpl(song)
+                _eventFlow.emit(UiEvent.ShowMessage("Էջանշումը կատարվել է"))
             }
 
+            // обновим флаг
             isFavoriteUseCase(song).collectLatest {
                 _isFavorite.value = it
             }
         }
     }
-
-    private var favoriteJob: Job? = null
 
     private fun observeFavoriteState(song: Song) {
         favoriteJob?.cancel()

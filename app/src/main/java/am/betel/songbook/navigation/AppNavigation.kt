@@ -25,7 +25,6 @@ fun AppNavigation(
             popExitTransition = null
         ) {
             SongScreenNavigation {
-                println("clicked on $it")
                 navController.navigate(AppDestination.Details(it))
             }
         }
@@ -38,9 +37,11 @@ fun AppNavigation(
         ) {
             val index = it.toRoute<AppDestination.Details>()
             DetailsScreen(
-                index = index.id, onBackClick = {
+                index = index.id,
+                onBackClick = {
                     navController.popBackStack()
-                })
+                }
+            )
         }
     }
 }
