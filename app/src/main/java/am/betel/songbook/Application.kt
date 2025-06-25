@@ -1,5 +1,7 @@
 package am.betel.songbook
 
+import am.betel.songbook.bookmark.data.di.bookmarkDataModule
+import am.betel.songbook.bookmark.presentation.di.bookmarkPresentationModule
 import am.betel.songbook.details.data.di.detailsDataModule
 import am.betel.songbook.details.presentation.di.detailsPresentationModule
 import am.betel.songbook.list.presentation.di.songListPresentationModule
@@ -24,7 +26,8 @@ class Application : Application() {
                 detailsDataModule,
                 detailsPresentationModule,
                 songsDataModule,
-
+                bookmarkPresentationModule,
+                bookmarkDataModule
             )
         }
 

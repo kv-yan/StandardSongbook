@@ -5,6 +5,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val detailsPresentationModule = module {
-    viewModel { (songIndex: String) -> DetailsViewModel(songIndex, get()) }
-
+    viewModel { (songIndex: String) ->
+        DetailsViewModel(
+            songIndex = songIndex,
+            getSongByIndexUseCase = get(),
+            addToFavoritesUseCaseImpl = get(),
+            removeFromFavoritesUseCase = get(),
+            isFavoriteUseCase = get()
+        )
+    }
 }

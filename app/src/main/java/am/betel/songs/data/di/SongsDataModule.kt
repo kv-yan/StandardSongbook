@@ -1,5 +1,6 @@
 package am.betel.songs.data.di
 
+import am.betel.songs.data.dao.FavoriteSongDao
 import am.betel.songs.data.dao.SongDao
 import am.betel.songs.data.database.AppDatabase
 import am.betel.songs.data.repository.SongRepositoryImpl
@@ -22,6 +23,11 @@ val songsDataModule = module {
     single<SongDao> {
         get<AppDatabase>().songDao()
     }
+
+    single<FavoriteSongDao> {
+        get<AppDatabase>().favoriteSongDao()
+    }
+
 
     singleOf(::SongRepositoryImpl) { bind<SongRepository>() }
 }

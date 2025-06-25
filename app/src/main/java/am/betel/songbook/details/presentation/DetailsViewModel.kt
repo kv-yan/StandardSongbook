@@ -1,17 +1,26 @@
 package am.betel.songbook.details.presentation
 
+import am.betel.songbook.bookmark.domain.usecase.AddToFavoritesUseCase
+import am.betel.songbook.bookmark.domain.usecase.IsFavoriteUseCase
+import am.betel.songbook.bookmark.domain.usecase.RemoveFromFavoritesUseCase
 import am.betel.songbook.details.domain.usecase.GetSongByIndexUseCase
 import am.betel.songs.domain.model.Song
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class DetailsViewModel(
     songIndex: String,
     private val getSongByIndexUseCase: GetSongByIndexUseCase,
+    private val addToFavoritesUseCaseImpl: AddToFavoritesUseCase,
+    private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -24,15 +33,20 @@ class DetailsViewModel(
 
     private val _currentIndex = MutableStateFlow(songIndex.toInt())
 
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite = _isFavorite.asStateFlow()
+
     init {
         getSongByIndexUseCase(songIndex).onEach {
             _currentSong.value = it
+            it?.let { song -> observeFavoriteState(song) }
         }.launchIn(viewModelScope)
     }
 
     private fun getSongByIndex(index: String) {
         getSongByIndexUseCase(index).onEach {
             _currentSong.value = it
+            it?.let { song -> observeFavoriteState(song) }
         }.launchIn(viewModelScope)
     }
 
@@ -49,4 +63,30 @@ class DetailsViewModel(
             getSongByIndex(_currentIndex.value.toString())
         }
     }
+
+    fun toggleFavorite() {
+        val song = _currentSong.value ?: return
+
+        viewModelScope.launch {
+            if (_isFavorite.value) {
+                removeFromFavoritesUseCase(song)
+            } else {
+                addToFavoritesUseCaseImpl(song)
+            }
+
+            isFavoriteUseCase(song).collectLatest {
+                _isFavorite.value = it
+            }
+        }
+    }
+
+    private var favoriteJob: Job? = null
+
+    private fun observeFavoriteState(song: Song) {
+        favoriteJob?.cancel()
+        favoriteJob = isFavoriteUseCase(song).onEach {
+            _isFavorite.value = it
+        }.launchIn(viewModelScope)
+    }
+
 }

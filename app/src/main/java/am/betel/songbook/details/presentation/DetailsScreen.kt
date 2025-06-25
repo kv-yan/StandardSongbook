@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,6 +44,12 @@ fun DetailsScreen(
     onBackClick: () -> Unit = {},
 ) {
     val currentSongs by viewModel.currentSongs.collectAsState()
+    val isFavorite by viewModel.isFavorite.collectAsState()
+    LaunchedEffect(
+        isFavorite
+    ) {
+        println("launch effect is favorite $isFavorite")
+    }
 
     val verticalScrollState = rememberScrollState()
     Scaffold(
@@ -73,9 +79,13 @@ fun DetailsScreen(
                 }, actions = {
 
                     IconButton(
-                        onClick = { /*TODO*/ }) {
+                        onClick = { viewModel.toggleFavorite() }
+                    ) {
                         Icon(
-                            imageVector = Icons.Rounded.FavoriteBorder,
+                            painter = if (isFavorite)
+                                painterResource(R.drawable.ic_bookmark_remove)
+                            else
+                                painterResource(R.drawable.ic_bookmark_add),
                             contentDescription = null,
                             tint = Blue700
                         )
