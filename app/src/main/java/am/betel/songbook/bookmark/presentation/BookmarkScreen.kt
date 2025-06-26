@@ -1,6 +1,7 @@
 package am.betel.songbook.bookmark.presentation
 
 import am.betel.songbook.R
+import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 fun BookmarkScreen(
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = koinViewModel(),
+    onSnackbarShown: (SnackbarState) -> Unit = {},
     onBackClick: () -> Unit = {},
     navigateToDetails: (Int) -> Unit = {},
 ) {
@@ -39,9 +41,7 @@ fun BookmarkScreen(
     val songs by viewModel.favoriteSongs.collectAsState()
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = Color.White,
-        topBar = {
+        modifier = modifier.fillMaxSize(), containerColor = Color.White, topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White
@@ -57,11 +57,12 @@ fun BookmarkScreen(
                     }
                 }, title = {
                     Text(
-                        text = stringResource(R.string.bookmarked_songs), fontFamily = FontRegular, color = Blue700
+                        text = stringResource(R.string.bookmarked_songs),
+                        fontFamily = FontRegular,
+                        color = Blue700
                     )
                 })
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         if (songs.isEmpty()) {
             Text(
                 modifier = Modifier
@@ -83,12 +84,20 @@ fun BookmarkScreen(
                 .padding(bottom = 64.dp),
         ) {
             items(
-                items = songs, key = { it.id }) { song ->
+                items = songs,
+                key = { it.id }
+            ) { song ->
                 BookmarkedSongItem(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    onClick = { navigateToDetails(it) },
                     song = song,
-                    onRemoveClick = { viewModel.removeFavoriteSong(song) })
+                    onClick = { navigateToDetails(it) },
+                    onRemoveClick = {
+                        viewModel.removeFavoriteSong(
+                            song = song,
+                            showSnackbar = onSnackbarShown
+                        )
+                    }
+                )
             }
         }
     }

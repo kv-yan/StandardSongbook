@@ -1,7 +1,7 @@
 package am.betel.songbook.navigation
 
 import am.betel.songbook.bookmark.presentation.BookmarkScreen
-import am.betel.songbook.common.presentation.ui.theme.ScreenBackground
+import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.list.presentation.ListScreen
 import am.betel.songbook.navigation.bottom_bar.BottomNavigationBar
 import am.betel.songbook.search.presentation.SearchScreen
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,20 +17,20 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun SongScreenNavigation(
     modifier: Modifier = Modifier,
+    onSnackbarShown: (SnackbarState) -> Unit = {},
     navigateToDetails: (Int) -> Unit = {},
 ) {
     val navController = rememberNavController()
 
     Scaffold(
         modifier = modifier,
-        containerColor = ScreenBackground,
+        containerColor = Color.White,
         bottomBar = {
             BottomNavigationBar(navController = navController)
-        }
+        },
     ) { innerPadding ->
         NavHost(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             navController = navController,
             startDestination = SongsDestination.List
         ) {
@@ -44,14 +45,16 @@ fun SongScreenNavigation(
             composable<SongsDestination.Search> {
                 SearchScreen(
                     navigateToDetails = navigateToDetails,
-                    onBackClick = { navController.popBackStack() }
-                )
+                    onBackClick = { navController.popBackStack() },
+
+                    )
             }
 
             composable<SongsDestination.Bookmark> {
                 BookmarkScreen(
                     navigateToDetails = navigateToDetails,
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
+                    onSnackbarShown = onSnackbarShown
                 )
             }
         }

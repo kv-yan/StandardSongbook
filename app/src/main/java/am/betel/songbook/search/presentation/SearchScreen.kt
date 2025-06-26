@@ -173,7 +173,9 @@ fun SearchScreen(
                     ) {
                         items(foundedSongs, key = { it.id }) {
                             SearchSongItem(
-                                song = it, onClick = navigateToDetails
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                song = it,
+                                onClick = navigateToDetails
                             )
                         }
                     }

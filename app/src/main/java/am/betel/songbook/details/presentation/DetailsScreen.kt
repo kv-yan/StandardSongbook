@@ -1,7 +1,7 @@
 package am.betel.songbook.details.presentation
 
 import am.betel.songbook.R
-import am.betel.songbook.common.presentation.ui.state.UiEvent
+import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontBold
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
@@ -20,14 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -48,30 +46,13 @@ fun DetailsScreen(
     index: Int,
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = getViewModel { parametersOf(index) },
+    onSnackbarShowed: (SnackbarState) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val currentSongs by viewModel.currentSongs.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { eventFlow ->
-            when (eventFlow) {
-                is UiEvent.ShowMessage -> {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(
-                        message = eventFlow.message,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-
-                null -> {
-                    /**** empty state ****/
-                }
-            }
-        }
-    }
 
     val verticalScrollState = rememberScrollState()
     Scaffold(
@@ -103,7 +84,9 @@ fun DetailsScreen(
                 }, actions = {
 
                     IconButton(
-                        onClick = { viewModel.toggleFavorite() }
+                        onClick = {
+                            viewModel.toggleFavorite(onSnackbarShowed = onSnackbarShowed)
+                        }
                     ) {
                         Icon(
                             painter = if (isFavorite)

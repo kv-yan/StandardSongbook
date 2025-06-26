@@ -1,7 +1,9 @@
 package am.betel.songbook.bookmark.presentation
 
+import am.betel.songbook.R
 import am.betel.songbook.bookmark.domain.usecase.GetFavoriteSongsUseCase
 import am.betel.songbook.bookmark.domain.usecase.RemoveFromFavoritesUseCase
+import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songs.domain.model.Song
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,9 +29,15 @@ class BookmarkViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun removeFavoriteSong(song: Song) {
+    fun removeFavoriteSong(song: Song, showSnackbar: (SnackbarState) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             removeFromFavoritesUseCase(song)
+            showSnackbar(
+                SnackbarState.Success(
+                    _message = R.string.song_unmarked,
+                    _icon = R.drawable.ic_bookmark_remove
+                )
+            )
         }
     }
 }
