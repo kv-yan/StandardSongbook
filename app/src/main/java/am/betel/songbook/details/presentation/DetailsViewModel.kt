@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -77,16 +76,14 @@ class DetailsViewModel(
 
         viewModelScope.launch {
             if (_isFavorite.value) {
+                // update button state first
+                _isFavorite.value = false
                 removeFromFavoritesUseCase(song)
                 _eventFlow.emit(UiEvent.ShowMessage("Էջանշումը հանվել է"))
             } else {
+                _isFavorite.value = true
                 addToFavoritesUseCaseImpl(song)
                 _eventFlow.emit(UiEvent.ShowMessage("Էջանշումը կատարվել է"))
-            }
-
-            // обновим флаг
-            isFavoriteUseCase(song).collectLatest {
-                _isFavorite.value = it
             }
         }
     }
@@ -97,5 +94,4 @@ class DetailsViewModel(
             _isFavorite.value = it
         }.launchIn(viewModelScope)
     }
-
 }

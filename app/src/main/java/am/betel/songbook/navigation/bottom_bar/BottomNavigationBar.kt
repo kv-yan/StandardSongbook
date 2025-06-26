@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -43,7 +44,9 @@ fun BottomNavigationBar(navController: NavController) {
                 label = {
                     Text(
                         text = item.route.route,
-                        color = if (isSelected) Blue700 else Color.Gray
+                        color = if (isSelected) Blue700 else Color.Gray,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
                     )
                 },
                 icon = {

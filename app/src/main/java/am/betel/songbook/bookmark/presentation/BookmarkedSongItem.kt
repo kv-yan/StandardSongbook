@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -52,16 +53,20 @@ fun BookmarkedSongItem(
             )
         }
 
-        Column(modifier = Modifier
-            .weight(1f)
-            .padding(start = 8.dp)) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp)
+        ) {
+
             Text(
                 modifier = Modifier,
                 text = stringResource(R.string.song_number, song.songNumber),
                 fontSize = 17.sp,
             )
+
             Text(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(),
                 text = words,
                 fontFamily = FontRegular,
                 maxLines = 2,

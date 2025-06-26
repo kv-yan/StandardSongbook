@@ -4,4 +4,5 @@
     <string name="error_text">Error</string>
     <string name="song_number">Երգ %1$s</string>
     <string name="song_index_number">Համար՝ %1$s</string>
+    <string name="no_bookmarked_songs">Դուք ոչ մի երգ դեռ չեք էջանշել</string>
 </resources>
