@@ -8,7 +8,7 @@ interface SongRepository {
 
     fun searchSongsByText(query: String): Flow<List<Song>>
 
-    fun getFavoriteSongs(): Flow<List<Song>> // i use this for getting favorite songs
+    fun getFavoriteSongs(): Flow<List<Song>>
 
     suspend fun addToFavorites(song: Song)
 

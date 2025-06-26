@@ -41,7 +41,13 @@ fun SongScreenNavigation(
             ) {
                 ListScreen(navigateToDetails = navigateToDetails)
             }
-            composable<SongsDestination.Search> { SearchScreen() }
+            composable<SongsDestination.Search> {
+                SearchScreen(
+                    navigateToDetails = navigateToDetails,
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
+
             composable<SongsDestination.Bookmark> {
                 BookmarkScreen(
                     navigateToDetails = navigateToDetails,
@@ -49,7 +55,5 @@ fun SongScreenNavigation(
                 )
             }
         }
-
-        innerPadding
     }
 }

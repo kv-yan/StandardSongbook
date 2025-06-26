@@ -1,5 +1,6 @@
 package am.betel.songbook.list.presentation
 
+import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.Shape16
@@ -27,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -84,7 +86,7 @@ fun ListScreen(
                     ),
                 label = {
                     Text(
-                        text = "Գրեք համարը",
+                        text = stringResource(R.string.enter_number),
                         style = TextStyle(fontFamily = FontRegular)
                     )
                 },
@@ -95,7 +97,7 @@ fun ListScreen(
                             contentColor = if (searchQuery.isNotEmpty()) Blue700 else Color.LightGray,
                         ),
                         onClick = { navigateToDetails(searchQuery.toInt()) }) {
-                        Text("Գտնել")
+                        Text(stringResource(R.string.search))
                     }
                 }
             )

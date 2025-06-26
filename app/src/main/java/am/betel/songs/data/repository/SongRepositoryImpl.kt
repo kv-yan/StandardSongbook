@@ -26,7 +26,7 @@ class SongRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun getFavoriteSongs(): Flow<List<Song>> =
-        favoriteSongDao.getFavoriteSongs().map { it.map { it.toSong() } }
+        favoriteSongDao.getFavoriteSongs().map { entities -> entities.map { it.toSong() } }
 
     override suspend fun addToFavorites(song: Song) {
         favoriteSongDao.addToFavorites(song.toFavoriteSongEntity())
@@ -37,7 +37,6 @@ class SongRepositoryImpl(
     }
 
     override fun isFavorite(song: Song): Flow<Boolean> = flow {
-        val result = favoriteSongDao.isFavorite(song.id)
-        emit(result)
+        emit(favoriteSongDao.isFavorite(song.id))
     }.flowOn(Dispatchers.IO)
 }

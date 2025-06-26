@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,7 +68,7 @@ fun ListRageItem(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
-                text = "${intRange.first} - ${intRange.last}",
+                text = stringResource(R.string.items_range, intRange.first, intRange.last),
                 style = TextStyle(
                     fontFamily = FontRegular,
                     fontSize = 16.sp

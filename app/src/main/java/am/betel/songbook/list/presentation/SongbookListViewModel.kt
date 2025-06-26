@@ -24,7 +24,9 @@ class SongbookListViewModel : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
+
     fun setSearchQuery(value: String) {
         _searchQuery.value = value
     }
 }
+

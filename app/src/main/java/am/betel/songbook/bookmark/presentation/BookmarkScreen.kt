@@ -39,26 +39,29 @@ fun BookmarkScreen(
     val songs by viewModel.favoriteSongs.collectAsState()
 
     Scaffold(
-        modifier = modifier.fillMaxSize(), containerColor = Color.White, topBar = {
+        modifier = modifier.fillMaxSize(),
+        containerColor = Color.White,
+        topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White
-            ), navigationIcon = {
-                IconButton(
-                    onClick = onBackClick
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_back),
-                        contentDescription = null,
-                        tint = Blue700
+                    containerColor = Color.White
+                ), navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_back),
+                            contentDescription = null,
+                            tint = Blue700
+                        )
+                    }
+                }, title = {
+                    Text(
+                        text = stringResource(R.string.bookmarked_songs), fontFamily = FontRegular, color = Blue700
                     )
-                }
-            }, title = {
-                Text(
-                    text = "Էջանշված երգեր", fontFamily = FontRegular, color = Blue700
-                )
-            })
-        }) { innerPadding ->
+                })
+        }
+    ) { innerPadding ->
         if (songs.isEmpty()) {
             Text(
                 modifier = Modifier

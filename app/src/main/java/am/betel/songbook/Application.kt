@@ -5,6 +5,8 @@ import am.betel.songbook.bookmark.presentation.di.bookmarkPresentationModule
 import am.betel.songbook.details.data.di.detailsDataModule
 import am.betel.songbook.details.presentation.di.detailsPresentationModule
 import am.betel.songbook.list.presentation.di.songListPresentationModule
+import am.betel.songbook.search.data.di.searchDataModule
+import am.betel.songbook.search.presentation.di.searchPresentationModule
 import am.betel.songs.data.di.songsDataModule
 import am.betel.songs.presentation.worker.ImportSongsWorker
 import android.app.Application
@@ -27,8 +29,11 @@ class Application : Application() {
                 detailsPresentationModule,
                 songsDataModule,
                 bookmarkPresentationModule,
-                bookmarkDataModule
-            )
+                bookmarkDataModule,
+                searchPresentationModule,
+                searchDataModule,
+
+                )
         }
 
         val workRequest = OneTimeWorkRequestBuilder<ImportSongsWorker>()
