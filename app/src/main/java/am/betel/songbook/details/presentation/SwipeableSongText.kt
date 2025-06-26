@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SwipeableSongText(
     words: String,
+    fontSize: Float = 16f,
     onNextSong: () -> Unit,
     onPrevSong: () -> Unit,
 ) {
@@ -54,7 +55,7 @@ fun SwipeableSongText(
             text = words,
             fontFamily = FontRegular,
             fontStyle = FontStyle.Normal,
-            fontSize = 16.sp,
+            fontSize = fontSize.sp,
             color = Color.Black
         )
     }

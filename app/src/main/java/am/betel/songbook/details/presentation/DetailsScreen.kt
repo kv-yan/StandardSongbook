@@ -1,5 +1,7 @@
 package am.betel.songbook.details.presentation
 
+import am.betel.settings.presentation.SettingsBottomSheet
+import am.betel.settings.presentation.SettingsViewModel
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.common.presentation.ui.theme.Blue700
@@ -19,15 +21,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,13 +47,14 @@ fun DetailsScreen(
     index: Int,
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = getViewModel { parametersOf(index) },
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     onSnackbarShowed: (SnackbarState) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val currentSongs by viewModel.currentSongs.collectAsState()
+    val currentFontSize by settingsViewModel.fontSize.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
-
-    val snackbarHostState = remember { SnackbarHostState() }
+    val bottomSheetExpanded = remember { mutableStateOf(false) }
 
     val verticalScrollState = rememberScrollState()
     Scaffold(
@@ -99,7 +101,7 @@ fun DetailsScreen(
                     }
 
                     IconButton(
-                        onClick = { /*TODO*/ }) {
+                        onClick = { bottomSheetExpanded.value = true }) {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = null,
@@ -108,23 +110,7 @@ fun DetailsScreen(
                     }
                 })
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) {
-                Snackbar(
-                    modifier = Modifier.padding(16.dp),
-                    containerColor = Blue700,
-                    contentColor = Color.White
-                ) {
-                    Text(
-                        text = it.visuals.message,
-                        fontFamily = FontRegular,
-                        fontSize = 18.sp
-                    )
-                }
-            }
-        }
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -146,9 +132,17 @@ fun DetailsScreen(
 
             SwipeableSongText(
                 words = words,
+                fontSize = currentFontSize,
                 onNextSong = viewModel::loadNextSong,
                 onPrevSong = viewModel::loadPrevSong
             )
         }
     }
+
+    SettingsBottomSheet(
+        expanded = bottomSheetExpanded,
+        currentFontSize = currentFontSize,
+        onFontSizeIncrease = settingsViewModel::increment,
+        onFontSizeDecrease = settingsViewModel::decrement
+    )
 }
