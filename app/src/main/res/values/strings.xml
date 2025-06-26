@@ -15,5 +15,7 @@
     <string name="test_snackbar">"Please wait"</string>
     <string name="song_marked">Էջանշումը կատարվել է</string>
     <string name="song_unmarked">Էջանշումը հանվել է</string>
+    <string name="font_size_controller_text">Ա</string>
+    <string name="change_font_size">Փոխեք տառաչափը։</string>
 
 </resources>
