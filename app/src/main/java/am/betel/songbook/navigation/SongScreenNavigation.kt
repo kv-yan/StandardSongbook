@@ -50,7 +50,12 @@ fun SongScreenNavigation(
                 )
             }
 
-            composable<SongsDestination.Search> {
+            composable<SongsDestination.Search>(
+                enterTransition = null,
+                exitTransition = null,
+                popEnterTransition = null,
+                popExitTransition = null
+            ) {
                 SearchScreen(
                     navigateToDetails = navigateToDetails,
                     appTheme = appTheme,
@@ -58,7 +63,12 @@ fun SongScreenNavigation(
                 )
             }
 
-            composable<SongsDestination.Bookmark> {
+            composable<SongsDestination.Bookmark>(
+                enterTransition = null,
+                exitTransition = null,
+                popEnterTransition = null,
+                popExitTransition = null
+            ) {
                 BookmarkScreen(
                     appTheme = appTheme,
                     navigateToDetails = navigateToDetails,

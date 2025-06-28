@@ -54,7 +54,7 @@ fun DetailsScreen(
     val currentSongs by viewModel.currentSongs.collectAsState()
     val currentFontSize by settingsViewModel.fontSize.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
-    val bottomSheetExpanded = remember { mutableStateOf(true) } // TODO: remove to false
+    val bottomSheetExpanded = remember { mutableStateOf(false) }
     val themes by settingsViewModel.availableThemes.collectAsState()
 
     val verticalScrollState = rememberScrollState()

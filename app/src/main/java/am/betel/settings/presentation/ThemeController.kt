@@ -42,7 +42,7 @@ fun ThemeController(
     }
 
     LazyRow(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         state = rowState

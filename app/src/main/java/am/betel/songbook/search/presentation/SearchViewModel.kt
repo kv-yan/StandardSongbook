@@ -27,6 +27,7 @@ class SearchViewModel(
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
+        _nothingFounded.value = false
     }
 
     fun onSearchClick() {

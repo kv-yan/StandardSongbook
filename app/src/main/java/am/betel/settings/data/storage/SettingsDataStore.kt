@@ -26,7 +26,7 @@ object SettingsDataStore {
 
     fun getThemeIndex(context: Context): Flow<Int> =
         context.dataStore.data
-            .map { it[THEME_INDEX_KEY] ?: 1 } // Default to 16sp
+            .map { it[THEME_INDEX_KEY] ?: 0 } // Default to 16sp
 
     suspend fun saveThemeIndex(context: Context, index: Int) {
         context.dataStore.edit {

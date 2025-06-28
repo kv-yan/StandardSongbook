@@ -111,6 +111,7 @@ fun AppNavigation(
                         modifier = Modifier
                             .offset(y = (index * 8).dp)
                             .zIndex(index.toFloat()),
+                        theme = theme,
                         state = state
                     ) {
                         snackBars.remove(state)

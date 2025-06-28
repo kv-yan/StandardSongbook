@@ -27,6 +27,7 @@ fun Song.toFavoriteSongEntity(): FavoriteSongEntity {
     )
 }
 
+/*
 fun Song.getTitle(): String {
 
     val text = Html.fromHtml(this.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
@@ -35,6 +36,23 @@ fun Song.getTitle(): String {
         .firstOrNull { it.isNotEmpty() }
         ?: ""
 }
+*/
+
+fun Song.getTitle(): String {
+
+    val text = Html.fromHtml(this.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
+    val result = StringBuilder()
+
+    for (it in text.split("\n")) {
+        if (it.contains("1.")) {
+            result.append(it)
+        }
+    }
+
+
+    return result.toString()
+}
+
 
 fun List<SongEntity>.toSong(): List<Song> {
     return this.map { it.toSong() }

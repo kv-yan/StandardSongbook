@@ -1,7 +1,7 @@
 package am.betel.songbook.common.presentation.component.snackbar
 
 
-import am.betel.songbook.common.presentation.ui.theme.Blue700
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.RoseRed
 import am.betel.songbook.common.presentation.ui.theme.Shape16
@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun AppSnackbar(
     modifier: Modifier = Modifier,
+    theme: AppTheme,
     state: SnackbarState,
     onDismiss: (SnackbarState) -> Unit = {},
 ) {
@@ -58,7 +59,7 @@ fun AppSnackbar(
     ) {
         val (backgroundColor, textColor) = when (state) {
             is SnackbarState.Error -> Pair(RoseRed, Color.White)
-            is SnackbarState.Success -> Pair(Blue700, Color.White)
+            is SnackbarState.Success -> Pair(theme.primaryColor, theme.backgroundColor)
         }
 
         Card(
@@ -82,7 +83,6 @@ fun AppSnackbar(
                         tint = textColor
                     )
                 }
-
 
                 Text(
                     text = stringResource(state.message),
