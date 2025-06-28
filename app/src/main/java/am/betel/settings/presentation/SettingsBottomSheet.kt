@@ -1,6 +1,6 @@
 package am.betel.settings.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,63 +24,72 @@ import androidx.compose.ui.unit.sp
 fun SettingsBottomSheet(
     modifier: Modifier = Modifier,
     expanded: MutableState<Boolean>,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
+    themes: List<AppTheme>,
     currentFontSize: Float = 16f,
     onFontSizeIncrease: () -> Unit = {},
     onFontSizeDecrease: () -> Unit = {},
+    onThemeChange: (AppTheme) -> Unit = {},
 ) {
 
     val sheetState = rememberModalBottomSheetState()
 
-    if (expanded.value)
-        ModalBottomSheet(
-            modifier = modifier,
-            containerColor = uiSettings.backgroundColor,
-            sheetState = sheetState,
-            onDismissRequest = { expanded.value = false }) {
-            Column(
+    if (expanded.value) ModalBottomSheet(
+        modifier = modifier,
+        containerColor = appTheme.backgroundColor,
+        sheetState = sheetState,
+        onDismissRequest = { expanded.value = false }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp)
+        ) {
+
+            Text(
+                modifier = Modifier.padding(
+                    start = 16.dp, bottom = 16.dp
+                ),
+                text = stringResource(R.string.change_font_size),
+                color = appTheme.primaryTextColor,
+            )
+
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp)
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                FontSizeController(
+                    modifier = Modifier.weight(1f), appTheme = appTheme, fontSize = 12.sp
+                ) {
+                    onFontSizeDecrease()
+                }
 
                 Text(
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        bottom = 16.dp
-                    ),
-                    text = stringResource(R.string.change_font_size),
-                    color = uiSettings.primaryTextColor,
+                    text = currentFontSize.toInt().toString(),
+                    fontSize = 16.sp,
+                    color = appTheme.primaryColor
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                FontSizeController(
+                    modifier = Modifier.weight(1f), appTheme = appTheme, fontSize = 18.sp
                 ) {
-                    FontSizeController(
-                        modifier = Modifier.weight(1f),
-                        uiSettings = uiSettings,
-                        fontSize = 12.sp
-                    ) {
-                        onFontSizeDecrease()
-                    }
-
-                    Text(
-                        text = currentFontSize.toInt().toString(),
-                        fontSize = 16.sp
-                    )
-
-                    FontSizeController(
-                        modifier = Modifier.weight(1f),
-                        uiSettings = uiSettings,
-                        fontSize = 18.sp
-                    ) {
-                        onFontSizeIncrease()
-                    }
+                    onFontSizeIncrease()
                 }
             }
+
+            ThemeController(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 16.dp,
+                        bottom = 24.dp
+                    ),
+                currentTheme = appTheme,
+                availableThemes = themes,
+                onClick = onThemeChange
+            )
         }
+    }
 }

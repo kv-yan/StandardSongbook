@@ -1,13 +1,11 @@
 package am.betel.settings.data.usecase
 
 import am.betel.settings.domain.repository.SettingsRepository
-import am.betel.settings.domain.usecase.GetFontSizeUseCase
 import am.betel.settings.domain.usecase.GetThemeIndexUseCase
 import kotlinx.coroutines.flow.Flow
 
-class GetFontSizeUseCaseImpl(
+class GetThemeIndexUseCaseImpl(
     private val repository: SettingsRepository,
-) : GetFontSizeUseCase {
-    override operator fun invoke(): Flow<Float> = repository.getFontSizeFlow()
+) : GetThemeIndexUseCase {
+    override operator fun invoke(): Flow<Int> = repository.getThemeIndex()
 }
-

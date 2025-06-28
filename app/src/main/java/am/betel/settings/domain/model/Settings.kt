@@ -11,19 +11,21 @@ import am.betel.songbook.common.presentation.ui.theme.gray_backgrount1
 import am.betel.songbook.common.presentation.ui.theme.gray_backgrount2
 import androidx.compose.ui.graphics.Color
 
-enum class UISettings(
+enum class AppTheme(
     val backgroundColor: Color,
     val primaryTextColor: Color,
     val secondaryTextColor: Color,
     val unfocusedColor: Color,
     val primaryColor: Color,
+    val darkIcons: Boolean,
 ) {
     LightBlue700(
         backgroundColor = Color.White,
         primaryTextColor = Color.Black,
         secondaryTextColor = Color.Gray,
         unfocusedColor = Color.LightGray,
-        primaryColor = Blue700
+        primaryColor = Blue700,
+        darkIcons = true
     ),
 
     LightRed(
@@ -31,7 +33,8 @@ enum class UISettings(
         primaryTextColor = Color.Black,
         secondaryTextColor = Color.Gray,
         unfocusedColor = Color.LightGray,
-        primaryColor = RoseRed
+        primaryColor = RoseRed,
+        darkIcons = true
     ),
 
     LightPurple40(
@@ -39,7 +42,8 @@ enum class UISettings(
         primaryTextColor = Color.Black,
         secondaryTextColor = Color.Gray,
         unfocusedColor = Color.LightGray,
-        primaryColor = Purple40
+        primaryColor = Purple40,
+        darkIcons = true
     ),
 
     LightPink40(
@@ -47,7 +51,8 @@ enum class UISettings(
         primaryTextColor = Color.Black,
         secondaryTextColor = Color.Gray,
         unfocusedColor = Color.LightGray,
-        primaryColor = Pink40
+        primaryColor = Pink40,
+        darkIcons = true
     ),
 
     LightCoral(
@@ -55,7 +60,8 @@ enum class UISettings(
         primaryTextColor = Color.Black,
         secondaryTextColor = Color.Gray,
         unfocusedColor = Color.LightGray,
-        primaryColor = TestCoral
+        primaryColor = TestCoral,
+        darkIcons = true
     ),
 
     DarkLightGray(
@@ -63,21 +69,24 @@ enum class UISettings(
         primaryTextColor = Color.White,
         secondaryTextColor = Color.White,
         unfocusedColor = Color.LightGray,
-        primaryColor = TestBue
+        primaryColor = TestBue,
+        darkIcons = false
     ),
     DarkDarkGrayBlue(
         backgroundColor = gray_backgrount2,
         primaryTextColor = Color.White,
         secondaryTextColor = Color.White,
         unfocusedColor = Color.LightGray,
-        primaryColor = TestBue
+        primaryColor = TestBue,
+        darkIcons = false
     ),
     DarkDarkGrayGreen(
         backgroundColor = gray_backgrount2,
         primaryTextColor = Color.White,
         secondaryTextColor = Color.White,
         unfocusedColor = Color.LightGray,
-        primaryColor = TestGreen
+        primaryColor = TestGreen,
+        darkIcons = false
     ),
 
 }

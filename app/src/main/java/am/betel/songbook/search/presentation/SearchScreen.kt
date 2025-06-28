@@ -1,8 +1,7 @@
 package am.betel.songbook.search.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
-import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.Shape16
 import androidx.compose.foundation.background
@@ -52,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     viewModel: SearchViewModel = koinViewModel(),
     navigateToDetails: (Int) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -66,11 +65,11 @@ fun SearchScreen(
     ) {
         Scaffold(
             modifier = modifier.fillMaxSize(),
-            containerColor = uiSettings.backgroundColor,
+            containerColor = appTheme.backgroundColor,
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = uiSettings.backgroundColor
+                        containerColor = appTheme.backgroundColor
                     ), navigationIcon = {
                         IconButton(
                             onClick = onBackClick
@@ -78,14 +77,14 @@ fun SearchScreen(
                             Icon(
                                 painter = painterResource(R.drawable.ic_back),
                                 contentDescription = null,
-                                tint = uiSettings.primaryColor
+                                tint = appTheme.primaryColor
                             )
                         }
                     }, title = {
                         Text(
                             text = stringResource(R.string.search),
                             fontFamily = FontRegular,
-                            color = uiSettings.primaryColor
+                            color = appTheme.primaryColor
                         )
                     })
             }) { innerPadding ->
@@ -109,17 +108,17 @@ fun SearchScreen(
                         viewModel.onSearchClick()
                     }),
                     colors = TextFieldDefaults.colors(
-                        focusedTextColor = uiSettings.primaryTextColor,
-                        unfocusedTextColor = uiSettings.primaryTextColor,
-                        focusedContainerColor = uiSettings.backgroundColor,
-                        unfocusedContainerColor = uiSettings.backgroundColor,
-                        focusedIndicatorColor = uiSettings.primaryColor,
-                        unfocusedIndicatorColor = uiSettings.unfocusedColor,
-                        focusedTrailingIconColor = uiSettings.unfocusedColor,
-                        unfocusedTrailingIconColor = uiSettings.unfocusedColor,
-                        focusedLabelColor = uiSettings.primaryColor,
-                        unfocusedLabelColor = uiSettings.primaryTextColor,
-                        cursorColor = uiSettings.primaryColor,
+                        focusedTextColor = appTheme.primaryTextColor,
+                        unfocusedTextColor = appTheme.primaryTextColor,
+                        focusedContainerColor = appTheme.backgroundColor,
+                        unfocusedContainerColor = appTheme.backgroundColor,
+                        focusedIndicatorColor = appTheme.primaryColor,
+                        unfocusedIndicatorColor = appTheme.unfocusedColor,
+                        focusedTrailingIconColor = appTheme.unfocusedColor,
+                        unfocusedTrailingIconColor = appTheme.unfocusedColor,
+                        focusedLabelColor = appTheme.primaryColor,
+                        unfocusedLabelColor = appTheme.primaryTextColor,
+                        cursorColor = appTheme.primaryColor,
 
                     ),
                     label = {
@@ -132,8 +131,8 @@ fun SearchScreen(
                         TextButton(
                             enabled = searchQuery.isNotEmpty(),
                             colors = ButtonDefaults.textButtonColors(
-                                contentColor = if (searchQuery.isNotEmpty()) uiSettings.primaryColor else uiSettings.unfocusedColor,
-                                disabledContentColor = uiSettings.unfocusedColor
+                                contentColor = if (searchQuery.isNotEmpty()) appTheme.primaryColor else appTheme.unfocusedColor,
+                                disabledContentColor = appTheme.unfocusedColor
                             ),
                             onClick = { viewModel.onSearchClick() }) {
                             Text(text = stringResource(R.string.search))
@@ -147,7 +146,7 @@ fun SearchScreen(
                         text = buildAnnotatedString {
                             withStyle(
                                 style = SpanStyle(
-                                    color = uiSettings.primaryTextColor,
+                                    color = appTheme.primaryTextColor,
                                     fontSize = 18.sp
                                 )
                             ) {
@@ -155,7 +154,7 @@ fun SearchScreen(
                             }
                             withStyle(
                                 style = SpanStyle(
-                                    color = uiSettings.secondaryTextColor,
+                                    color = appTheme.secondaryTextColor,
                                     fontSize = 16.sp
                                 )
                             ) {
@@ -164,7 +163,7 @@ fun SearchScreen(
                         },
                         style = TextStyle(
                             fontFamily = FontRegular,
-                            color = uiSettings.secondaryTextColor,
+                            color = appTheme.secondaryTextColor,
                             textAlign = TextAlign.Center
                         )
                     )
@@ -172,14 +171,14 @@ fun SearchScreen(
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
-                            .border(0.5.dp, uiSettings.unfocusedColor, shape = Shape16)
+                            .border(0.5.dp, appTheme.unfocusedColor, shape = Shape16)
                             .clip(Shape16)
                     ) {
                         items(foundedSongs, key = { it.id }) {
                             SearchSongItem(
                                 modifier = Modifier.padding(vertical = 8.dp),
                                 song = it,
-                                uiSettings = uiSettings,
+                                appTheme = appTheme,
                                 onClick = navigateToDetails
                             )
                         }
@@ -197,7 +196,7 @@ fun SearchScreen(
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                color = uiSettings.primaryColor, strokeWidth = 4.dp
+                color = appTheme.primaryColor, strokeWidth = 4.dp
             )
         }
     }

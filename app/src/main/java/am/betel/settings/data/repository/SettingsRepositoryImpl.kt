@@ -15,4 +15,12 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
     override suspend fun updateFontSize(size: Float) {
         SettingsDataStore.saveFontSize(context, size)
     }
+
+    override fun getThemeIndex(): Flow<Int> = SettingsDataStore.getThemeIndex(context).flowOn(
+        Dispatchers.IO
+    )
+
+    override suspend fun updateThemeIndex(index: Int) {
+        SettingsDataStore.saveThemeIndex(context,index)
+    }
 }

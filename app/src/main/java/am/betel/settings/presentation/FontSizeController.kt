@@ -1,6 +1,6 @@
 package am.betel.settings.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.Shape10
 import androidx.compose.material3.Button
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.TextUnit
 @Composable
 fun FontSizeController(
     modifier: Modifier = Modifier,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     fontSize: TextUnit,
     onClick: () -> Unit,
 ) {
@@ -22,8 +22,8 @@ fun FontSizeController(
         modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = uiSettings.primaryColor,
-            contentColor = uiSettings.backgroundColor
+            containerColor = appTheme.primaryColor,
+            contentColor = appTheme.backgroundColor
         ),
         shape = Shape10
     ) {

@@ -1,6 +1,6 @@
 package am.betel.songbook.search.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songs.domain.model.Song
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 fun SearchSongItem(
     modifier: Modifier = Modifier,
     song: Song,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     onClick: (Int) -> Unit = {},
 ) {
     val words = Html.fromHtml(song.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
@@ -44,7 +44,7 @@ fun SearchSongItem(
             modifier = Modifier
                 .padding(8.dp)
                 .background(
-                    color = uiSettings.primaryColor,
+                    color = appTheme.primaryColor,
                     shape = CircleShape
                 )
                 .padding(8.dp),
@@ -53,7 +53,7 @@ fun SearchSongItem(
                 modifier = Modifier.size(28.dp),
                 painter = painterResource(R.drawable.ic_lib_music),
                 contentDescription = null,
-                tint = uiSettings.backgroundColor
+                tint = appTheme.backgroundColor
             )
         }
 
@@ -67,7 +67,7 @@ fun SearchSongItem(
                 modifier = Modifier,
                 text = stringResource(R.string.song_index_number, song.songNumber),
                 fontSize = 17.sp,
-                color = uiSettings.primaryTextColor
+                color = appTheme.primaryTextColor
             )
 
             Text(
@@ -77,14 +77,14 @@ fun SearchSongItem(
                 maxLines = 2,
                 fontSize = 15.sp,
                 overflow = TextOverflow.Ellipsis,
-                color = uiSettings.primaryTextColor
+                color = appTheme.primaryTextColor
             )
         }
 
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
             contentDescription = null,
-            tint = uiSettings.primaryColor
+            tint = appTheme.primaryColor
         )
     }
 }

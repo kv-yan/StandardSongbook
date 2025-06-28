@@ -1,6 +1,6 @@
 package am.betel.songbook.list.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.Shape16
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -38,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ListScreen(
     modifier: Modifier = Modifier,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     songbookListViewModel: SongbookListViewModel = koinViewModel(),
     navigateToDetails: (Int) -> Unit = {},
 ) {
@@ -47,7 +46,7 @@ fun ListScreen(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = uiSettings.backgroundColor,
+        containerColor = appTheme.backgroundColor,
     ) {
         Column(
             modifier = Modifier
@@ -76,17 +75,17 @@ fun ListScreen(
                     navigateToDetails(searchQuery.toInt())
                 }),
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor = uiSettings.primaryTextColor,
-                    unfocusedTextColor = uiSettings.primaryTextColor,
-                    focusedContainerColor = uiSettings.backgroundColor,
-                    unfocusedContainerColor = uiSettings.backgroundColor,
-                    focusedIndicatorColor = uiSettings.primaryColor,
-                    unfocusedIndicatorColor = uiSettings.unfocusedColor,
-                    focusedTrailingIconColor = uiSettings.primaryTextColor,
-                    unfocusedTrailingIconColor = uiSettings.unfocusedColor,
-                    unfocusedLabelColor = uiSettings.primaryTextColor,
-                    cursorColor = uiSettings.primaryColor,
-                    focusedLabelColor = uiSettings.primaryColor,
+                    focusedTextColor = appTheme.primaryTextColor,
+                    unfocusedTextColor = appTheme.primaryTextColor,
+                    focusedContainerColor = appTheme.backgroundColor,
+                    unfocusedContainerColor = appTheme.backgroundColor,
+                    focusedIndicatorColor = appTheme.primaryColor,
+                    unfocusedIndicatorColor = appTheme.unfocusedColor,
+                    focusedTrailingIconColor = appTheme.primaryTextColor,
+                    unfocusedTrailingIconColor = appTheme.unfocusedColor,
+                    unfocusedLabelColor = appTheme.primaryTextColor,
+                    cursorColor = appTheme.primaryColor,
+                    focusedLabelColor = appTheme.primaryColor,
                 ),
                 label = {
                     Text(
@@ -98,8 +97,8 @@ fun ListScreen(
                     TextButton(
                         enabled = searchQuery.isNotEmpty(),
                         colors = ButtonDefaults.textButtonColors(
-                            contentColor = if (searchQuery.isNotEmpty()) uiSettings.primaryColor else uiSettings.unfocusedColor,
-                            disabledContentColor = uiSettings.unfocusedColor
+                            contentColor = if (searchQuery.isNotEmpty()) appTheme.primaryColor else appTheme.unfocusedColor,
+                            disabledContentColor = appTheme.unfocusedColor
                         ),
                         onClick = { navigateToDetails(searchQuery.toInt()) }) {
                         Text(stringResource(R.string.search))
@@ -111,10 +110,10 @@ fun ListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .background(
-                        color = uiSettings.backgroundColor,
+                        color = appTheme.backgroundColor,
                         shape = RoundedCornerShape(16.dp)
                     )
-                    .border(0.5.dp, uiSettings.unfocusedColor, RoundedCornerShape(16.dp)),
+                    .border(0.5.dp, appTheme.unfocusedColor, RoundedCornerShape(16.dp)),
                 contentPadding = PaddingValues(16.dp)
             ) {
                 itemsIndexed(
@@ -124,7 +123,7 @@ fun ListScreen(
                     ListRageItem(
                         modifier = Modifier.fillMaxWidth(),
                         intRange = range,
-                        uiSettings = uiSettings,
+                        appTheme = appTheme,
                         initialExpanded = false,
                         navigateToDetails = navigateToDetails
                     )

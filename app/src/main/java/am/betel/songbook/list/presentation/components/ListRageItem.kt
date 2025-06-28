@@ -1,7 +1,7 @@
 package am.betel.songbook.list.presentation.components
 
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.FontBold
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ListRageItem(
     modifier: Modifier = Modifier,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     intRange: IntRange,
     initialExpanded: Boolean = false,
     navigateToDetails: (Int) -> Unit = {},
@@ -63,7 +63,7 @@ fun ListRageItem(
             Icon(
                 painter = painterResource(R.drawable.ic_music),
                 contentDescription = null,
-                tint = uiSettings.primaryColor
+                tint = appTheme.primaryColor
             )
 
             Text(
@@ -74,7 +74,7 @@ fun ListRageItem(
                 style = TextStyle(
                     fontFamily = FontRegular,
                     fontSize = 16.sp,
-                    color = uiSettings.primaryTextColor
+                    color = appTheme.primaryTextColor
                 )
             )
 
@@ -84,7 +84,7 @@ fun ListRageItem(
                 Icon(
                     imageVector = if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
                     contentDescription = null,
-                    tint = uiSettings.primaryTextColor
+                    tint = appTheme.primaryTextColor
                 )
             }
         }
@@ -98,7 +98,7 @@ fun ListRageItem(
                     .fillMaxWidth()
                     .border(
                         width = 0.5.dp,
-                        color = uiSettings.primaryTextColor,
+                        color = appTheme.primaryTextColor,
                         shape = Shape16
                     )
                     .padding(4.dp)
@@ -116,8 +116,8 @@ fun ListRageItem(
                         shape = RoundedCornerShape(0),
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = uiSettings.backgroundColor,
-                                contentColor = uiSettings.primaryTextColor
+                                containerColor = appTheme.backgroundColor,
+                                contentColor = appTheme.primaryTextColor
                             )
                     ) {
                         Text(
@@ -125,7 +125,7 @@ fun ListRageItem(
                             style = TextStyle(
                                 fontFamily = FontBold,
                                 fontSize = 15.sp,
-                                color = uiSettings.primaryTextColor
+                                color = appTheme.primaryTextColor
                             )
                         )
                     }

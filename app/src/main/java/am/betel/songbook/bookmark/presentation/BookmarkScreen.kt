@@ -1,6 +1,6 @@
 package am.betel.songbook.bookmark.presentation
 
-import am.betel.settings.domain.model.UISettings
+import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun BookmarkScreen(
     modifier: Modifier = Modifier,
-    uiSettings: UISettings,
+    appTheme: AppTheme,
     viewModel: BookmarkViewModel = koinViewModel(),
     onSnackbarShown: (SnackbarState) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -43,11 +42,11 @@ fun BookmarkScreen(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = uiSettings.backgroundColor,
+        containerColor = appTheme.backgroundColor,
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = uiSettings.backgroundColor
+                    containerColor = appTheme.backgroundColor
                 ), navigationIcon = {
                     IconButton(
                         onClick = onBackClick
@@ -55,14 +54,14 @@ fun BookmarkScreen(
                         Icon(
                             painter = painterResource(R.drawable.ic_back),
                             contentDescription = null,
-                            tint = uiSettings.primaryColor
+                            tint = appTheme.primaryColor
                         )
                     }
                 }, title = {
                     Text(
                         text = stringResource(R.string.bookmarked_songs),
                         fontFamily = FontRegular,
-                        color = uiSettings.primaryColor
+                        color = appTheme.primaryColor
                     )
                 })
         }
@@ -75,7 +74,7 @@ fun BookmarkScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 text = stringResource(R.string.no_bookmarked_songs),
                 fontFamily = FontRegular,
-                color = uiSettings.primaryColor,
+                color = appTheme.primaryColor,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center
 
@@ -94,7 +93,7 @@ fun BookmarkScreen(
                 BookmarkedSongItem(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     song = song,
-                    uiSettings = uiSettings,
+                    appTheme = appTheme,
                     onClick = { navigateToDetails(it) },
                     onRemoveClick = {
                         viewModel.removeFavoriteSong(

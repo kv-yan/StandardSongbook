@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -31,6 +33,7 @@ fun AppNavigation(
     startDestination: AppDestination = AppDestination.SongScreen,
     settingsViewModel: SettingsViewModel = koinViewModel(),
 ) {
+    val systemUiController = rememberSystemUiController()
     val navController = rememberNavController()
     val snackBars = remember { mutableStateListOf<SnackbarState>() }
     val uiSettings by settingsViewModel.uiSettings.collectAsState()
@@ -39,65 +42,79 @@ fun AppNavigation(
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
-        NavHost(
-            modifier = modifier.background(uiSettings.backgroundColor),
-            navController = navController,
-            startDestination = startDestination
-        ) {
-            composable<AppDestination.SongScreen>(
-                enterTransition = null,
-                exitTransition = null,
-                popEnterTransition = null,
-                popExitTransition = null
+        uiSettings?.let { theme ->
+            LaunchedEffect(theme) {
+                println("theme changed $theme")
+                systemUiController.setStatusBarColor(
+                    color = Color.Transparent,
+                    darkIcons = theme.darkIcons
+                )
+
+                systemUiController.setNavigationBarColor(
+                    color = Color.Transparent,
+                    darkIcons = theme.darkIcons
+                )
+
+            }
+
+            NavHost(
+                modifier = modifier.background(theme.backgroundColor),
+                navController = navController,
+                startDestination = startDestination
             ) {
-                SongScreenNavigation(
-                    uiSettings = uiSettings,
-                    onSnackbarShown = { snackBars.add(it) }
+                composable<AppDestination.SongScreen>(
+                    enterTransition = null,
+                    exitTransition = null,
+                    popEnterTransition = null,
+                    popExitTransition = null
                 ) {
-                    if (it <= 1000) {
-                        navController.navigate(AppDestination.Details(it))
-                    } else {
-                        snackBars.add(
-                            SnackbarState.Error(
-                                _message = am.betel.songbook.R.string.no_song_found_by_number
+                    SongScreenNavigation(
+                        appTheme = theme, onSnackbarShown = { snackBars.add(it) }) {
+                        if (it <= 1000) {
+                            navController.navigate(AppDestination.Details(it))
+                        } else {
+                            snackBars.add(
+                                SnackbarState.Error(
+                                    _message = am.betel.songbook.R.string.no_song_found_by_number
+                                )
                             )
-                        )
+                        }
                     }
+                }
+
+
+                composable<AppDestination.Details>(
+                    enterTransition = null,
+                    exitTransition = null,
+                    popEnterTransition = null,
+                    popExitTransition = null
+                ) { stackEntry ->
+                    val index = stackEntry.toRoute<AppDestination.Details>()
+                    DetailsScreen(
+                        index = index.id,
+                        appTheme = theme,
+                        settingsViewModel = settingsViewModel,
+                        onBackClick = {
+                            navController.popBackStack()
+                        },
+                        onSnackbarShowed = { snackBars.add(it) })
                 }
             }
 
-            composable<AppDestination.Details>(
-                enterTransition = null,
-                exitTransition = null,
-                popEnterTransition = null,
-                popExitTransition = null
-            ) { stackEntry ->
-                val index = stackEntry.toRoute<AppDestination.Details>()
-                DetailsScreen(
-                    index = index.id,
-                    uiSettings = uiSettings,
-                    settingsViewModel = settingsViewModel,
-                    onBackClick = {
-                        navController.popBackStack()
-                    },
-                    onSnackbarShowed = { snackBars.add(it) }
-                )
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 32.dp)
-        ) {
-            snackBars.forEachIndexed { index, state ->
-                AppSnackbar(
-                    modifier = Modifier
-                        .offset(y = (index * 8).dp)
-                        .zIndex(index.toFloat()),
-                    state = state
-                ) {
-                    snackBars.remove(state)
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 32.dp)
+            ) {
+                snackBars.forEachIndexed { index, state ->
+                    AppSnackbar(
+                        modifier = Modifier
+                            .offset(y = (index * 8).dp)
+                            .zIndex(index.toFloat()),
+                        state = state
+                    ) {
+                        snackBars.remove(state)
+                    }
                 }
             }
         }
