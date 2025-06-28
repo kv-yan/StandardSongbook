@@ -1,8 +1,8 @@
 package am.betel.songbook.list.presentation.components
 
 
+import am.betel.settings.domain.model.UISettings
 import am.betel.songbook.R
-import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontBold
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.Shape16
@@ -34,7 +34,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -45,12 +44,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ListRageItem(
     modifier: Modifier = Modifier,
+    uiSettings: UISettings,
     intRange: IntRange,
     initialExpanded: Boolean = false,
     navigateToDetails: (Int) -> Unit = {},
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(initialExpanded) }
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +63,7 @@ fun ListRageItem(
             Icon(
                 painter = painterResource(R.drawable.ic_music),
                 contentDescription = null,
-                tint = Blue700
+                tint = uiSettings.primaryColor
             )
 
             Text(
@@ -71,15 +73,18 @@ fun ListRageItem(
                 text = stringResource(R.string.items_range, intRange.first, intRange.last),
                 style = TextStyle(
                     fontFamily = FontRegular,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = uiSettings.primaryTextColor
                 )
             )
 
             IconButton(
-                onClick = { isExpanded = !isExpanded }) {
+                onClick = { isExpanded = !isExpanded }
+            ) {
                 Icon(
                     imageVector = if (isExpanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = uiSettings.primaryTextColor
                 )
             }
         }
@@ -93,7 +98,7 @@ fun ListRageItem(
                     .fillMaxWidth()
                     .border(
                         width = 0.5.dp,
-                        color = Color.Black,
+                        color = uiSettings.primaryTextColor,
                         shape = Shape16
                     )
                     .padding(4.dp)
@@ -111,14 +116,16 @@ fun ListRageItem(
                         shape = RoundedCornerShape(0),
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = Color.White, contentColor = Color.Black
+                                containerColor = uiSettings.backgroundColor,
+                                contentColor = uiSettings.primaryTextColor
                             )
                     ) {
                         Text(
                             text = it.toString(),
                             style = TextStyle(
                                 fontFamily = FontBold,
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                color = uiSettings.primaryTextColor
                             )
                         )
                     }

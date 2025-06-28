@@ -1,6 +1,7 @@
 package am.betel.songbook.navigation.bottom_bar
 
 
+import am.betel.settings.domain.model.UISettings
 import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.navigation.SongsDestination
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -20,7 +21,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(
+    navController: NavController,
+    uiSettings: UISettings
+) {
     val items = listOf(
         BottomNavItem.HomeScreen,
         BottomNavItem.ShopScreen,
@@ -31,20 +35,20 @@ fun BottomNavigationBar(navController: NavController) {
     val currentDestination = navBackStackEntry?.destination
     BottomNavigation(
         modifier = Modifier.systemBarsPadding(),
-        backgroundColor = Color.White,
+        backgroundColor = uiSettings.backgroundColor,
     ) {
         items.forEach { item ->
             val isSelected = item.route::class.qualifiedName?.let {
                 currentDestination?.route?.contains(it)
             } ?: false
             BottomNavigationItem(
-                selectedContentColor = Color.Black,
-                unselectedContentColor = Color.Gray,
+                selectedContentColor = uiSettings.primaryTextColor,
+                unselectedContentColor = uiSettings.unfocusedColor,
                 selected = isSelected,
                 label = {
                     Text(
                         text = item.route.route,
-                        color = if (isSelected) Blue700 else Color.Gray,
+                        color = if (isSelected) uiSettings.primaryColor else uiSettings.secondaryTextColor,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
@@ -53,7 +57,7 @@ fun BottomNavigationBar(navController: NavController) {
                     Icon(
                         painter = painterResource(item.iconResource),
                         contentDescription = null,
-                        tint = if (isSelected) Blue700 else Color.Gray
+                        tint = if (isSelected) uiSettings.primaryColor else uiSettings.secondaryTextColor
                     )
                 },
                 onClick = {

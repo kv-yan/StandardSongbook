@@ -24,7 +24,7 @@ interface FavoriteSongDao {
     @Query(
         """
         SELECT s.* FROM SongEntity s
-        INNER JOIN FavoriteSongs f ON s.id = f.songId
+        INNER JOIN FavoriteSongs f ON s.id = f.songId ORDER BY f.addedAt
     """
     )
     fun getFavoriteSongs(): Flow<List<SongEntity>>

@@ -18,16 +18,20 @@ class MainActivity : ComponentActivity() {
             val systemUiController = rememberSystemUiController()
             LaunchedEffect(Unit) {
                 // Change only the bottom navigation bar color
+/*
                 systemUiController.setNavigationBarColor(
                     color = Color.White, // Your desired color
                     darkIcons = true // Automatically adjust icon colors
                 )
+*/
 
                 // Optional: Keep status bar settings if needed
+/*
                 systemUiController.setStatusBarColor(
                     color = Color.White,
                     darkIcons = true
                 )
+*/
             }
             AppNavigation()
         }

@@ -1,10 +1,10 @@
 package am.betel.songbook.details.presentation
 
+import am.betel.settings.domain.model.UISettings
 import am.betel.settings.presentation.SettingsBottomSheet
 import am.betel.settings.presentation.SettingsViewModel
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
-import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontBold
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songs.data.helper.getTitle
@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -44,8 +43,9 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    index: Int,
     modifier: Modifier = Modifier,
+    index: Int,
+    uiSettings: UISettings,
     viewModel: DetailsViewModel = getViewModel { parametersOf(index) },
     settingsViewModel: SettingsViewModel = koinViewModel(),
     onSnackbarShowed: (SnackbarState) -> Unit = {},
@@ -59,18 +59,18 @@ fun DetailsScreen(
     val verticalScrollState = rememberScrollState()
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = Color.White,
+        containerColor = uiSettings.backgroundColor,
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
+                    containerColor = uiSettings.backgroundColor
                 ), title = {
                     Text(
                         text = stringResource(R.string.song_number, currentSongs?.songNumber ?: 0),
                         fontFamily = FontBold,
                         fontStyle = FontStyle.Normal,
                         fontSize = 20.sp,
-                        color = Blue700
+                        color = uiSettings.primaryColor
                     )
 
                 }, navigationIcon = {
@@ -80,7 +80,7 @@ fun DetailsScreen(
                         Icon(
                             painter = painterResource(R.drawable.ic_back),
                             contentDescription = null,
-                            tint = Blue700
+                            tint = uiSettings.primaryColor
                         )
                     }
                 }, actions = {
@@ -96,7 +96,7 @@ fun DetailsScreen(
                             else
                                 painterResource(R.drawable.ic_bookmark_add),
                             contentDescription = null,
-                            tint = Blue700
+                            tint = uiSettings.primaryColor
                         )
                     }
 
@@ -105,7 +105,7 @@ fun DetailsScreen(
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = null,
-                            tint = Blue700
+                            tint = uiSettings.primaryColor
                         )
                     }
                 })
@@ -124,7 +124,8 @@ fun DetailsScreen(
                 fontFamily = FontRegular,
                 fontSize = 22.sp,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = uiSettings.primaryTextColor
             )
 
             val words =
@@ -132,6 +133,7 @@ fun DetailsScreen(
 
             SwipeableSongText(
                 words = words,
+                uiSettings = uiSettings,
                 fontSize = currentFontSize,
                 onNextSong = viewModel::loadNextSong,
                 onPrevSong = viewModel::loadPrevSong
@@ -141,6 +143,7 @@ fun DetailsScreen(
 
     SettingsBottomSheet(
         expanded = bottomSheetExpanded,
+        uiSettings = uiSettings,
         currentFontSize = currentFontSize,
         onFontSizeIncrease = settingsViewModel::increment,
         onFontSizeDecrease = settingsViewModel::decrement

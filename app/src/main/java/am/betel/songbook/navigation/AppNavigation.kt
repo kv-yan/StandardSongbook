@@ -1,5 +1,6 @@
 package am.betel.songbook.navigation
 
+import am.betel.settings.presentation.SettingsViewModel
 import am.betel.songbook.common.presentation.component.snackbar.AppSnackbar
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.details.presentation.DetailsScreen
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,21 +23,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
     startDestination: AppDestination = AppDestination.SongScreen,
+    settingsViewModel: SettingsViewModel = koinViewModel(),
 ) {
     val navController = rememberNavController()
     val snackBars = remember { mutableStateListOf<SnackbarState>() }
+    val uiSettings by settingsViewModel.uiSettings.collectAsState()
 
 
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
         NavHost(
-            modifier = modifier.background(Color.White),
+            modifier = modifier.background(uiSettings.backgroundColor),
             navController = navController,
             startDestination = startDestination
         ) {
@@ -45,6 +51,7 @@ fun AppNavigation(
                 popExitTransition = null
             ) {
                 SongScreenNavigation(
+                    uiSettings = uiSettings,
                     onSnackbarShown = { snackBars.add(it) }
                 ) {
                     if (it <= 1000) {
@@ -64,10 +71,12 @@ fun AppNavigation(
                 exitTransition = null,
                 popEnterTransition = null,
                 popExitTransition = null
-            ) {
-                val index = it.toRoute<AppDestination.Details>()
+            ) { stackEntry ->
+                val index = stackEntry.toRoute<AppDestination.Details>()
                 DetailsScreen(
                     index = index.id,
+                    uiSettings = uiSettings,
+                    settingsViewModel = settingsViewModel,
                     onBackClick = {
                         navController.popBackStack()
                     },

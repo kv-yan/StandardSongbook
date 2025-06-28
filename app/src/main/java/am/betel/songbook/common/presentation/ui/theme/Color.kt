@@ -12,3 +12,10 @@ val Pink40 = Color(0xFF7D5260)
 
 val Blue700 = Color(0xFF008080)
 val RoseRed = Color(0xFFF83758)
+
+val TestCoral = Color(0xFFFF5252)
+val TestBue = Color(0xFF2C80C4)
+val TestGreen = Color(0xFF3D8366)
+
+val gray_backgrount1 = Color(0xFF2B2D30)
+val gray_backgrount2 = Color(0xFF1E1F22)

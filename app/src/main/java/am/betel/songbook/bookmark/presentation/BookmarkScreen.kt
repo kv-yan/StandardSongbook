@@ -1,8 +1,8 @@
 package am.betel.songbook.bookmark.presentation
 
+import am.betel.settings.domain.model.UISettings
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
-import am.betel.songbook.common.presentation.ui.theme.Blue700
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun BookmarkScreen(
     modifier: Modifier = Modifier,
+    uiSettings: UISettings,
     viewModel: BookmarkViewModel = koinViewModel(),
     onSnackbarShown: (SnackbarState) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -41,10 +42,12 @@ fun BookmarkScreen(
     val songs by viewModel.favoriteSongs.collectAsState()
 
     Scaffold(
-        modifier = modifier.fillMaxSize(), containerColor = Color.White, topBar = {
+        modifier = modifier.fillMaxSize(),
+        containerColor = uiSettings.backgroundColor,
+        topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
+                    containerColor = uiSettings.backgroundColor
                 ), navigationIcon = {
                     IconButton(
                         onClick = onBackClick
@@ -52,17 +55,18 @@ fun BookmarkScreen(
                         Icon(
                             painter = painterResource(R.drawable.ic_back),
                             contentDescription = null,
-                            tint = Blue700
+                            tint = uiSettings.primaryColor
                         )
                     }
                 }, title = {
                     Text(
                         text = stringResource(R.string.bookmarked_songs),
                         fontFamily = FontRegular,
-                        color = Blue700
+                        color = uiSettings.primaryColor
                     )
                 })
-        }) { innerPadding ->
+        }
+    ) { innerPadding ->
         if (songs.isEmpty()) {
             Text(
                 modifier = Modifier
@@ -71,7 +75,7 @@ fun BookmarkScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 text = stringResource(R.string.no_bookmarked_songs),
                 fontFamily = FontRegular,
-                color = Blue700,
+                color = uiSettings.primaryColor,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center
 
@@ -90,6 +94,7 @@ fun BookmarkScreen(
                 BookmarkedSongItem(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     song = song,
+                    uiSettings = uiSettings,
                     onClick = { navigateToDetails(it) },
                     onRemoveClick = {
                         viewModel.removeFavoriteSong(
