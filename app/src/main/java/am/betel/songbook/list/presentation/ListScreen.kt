@@ -2,8 +2,7 @@ package am.betel.songbook.list.presentation
 
 import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
-import am.betel.songbook.common.presentation.ui.theme.FontRegular
-import am.betel.songbook.common.presentation.ui.theme.Shape16
+import am.betel.songbook.common.presentation.component.inputFeald.AppInputField
 import am.betel.songbook.list.presentation.components.ListRageItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,17 +17,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -57,42 +53,12 @@ fun ListScreen(
                     bottom = 52.dp
                 )
         ) {
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                value = searchQuery,
-                shape = Shape16,
+            AppInputField(
+                modifier = Modifier.fillMaxWidth(),
+                label = stringResource(R.string.enter_number),
+                searchQuery = searchQuery,
+                appTheme = appTheme,
                 onValueChange = songbookListViewModel::setSearchQuery,
-                singleLine = true,
-                textStyle = TextStyle(fontFamily = FontRegular),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Search,
-                    keyboardType = KeyboardType.Number
-                ),
-                keyboardActions = KeyboardActions(onSearch = {
-                    navigateToDetails(searchQuery.toInt())
-                }),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = appTheme.primaryTextColor,
-                    unfocusedTextColor = appTheme.primaryTextColor,
-                    focusedContainerColor = appTheme.backgroundColor,
-                    unfocusedContainerColor = appTheme.backgroundColor,
-                    focusedIndicatorColor = appTheme.primaryColor,
-                    unfocusedIndicatorColor = appTheme.unfocusedColor,
-                    focusedTrailingIconColor = appTheme.primaryTextColor,
-                    unfocusedTrailingIconColor = appTheme.unfocusedColor,
-                    unfocusedLabelColor = appTheme.primaryTextColor,
-                    cursorColor = appTheme.primaryColor,
-                    focusedLabelColor = appTheme.primaryColor,
-                ),
-                label = {
-                    Text(
-                        text = stringResource(R.string.enter_number),
-                        style = TextStyle(fontFamily = FontRegular),
-                    )
-                },
                 trailingIcon = {
                     TextButton(
                         enabled = searchQuery.isNotEmpty(),
@@ -103,8 +69,17 @@ fun ListScreen(
                         onClick = { navigateToDetails(searchQuery.toInt()) }) {
                         Text(stringResource(R.string.search))
                     }
-                }
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Search,
+                    keyboardType = KeyboardType.Number
+                ),
+                keyboardActions = KeyboardActions(onSearch = {
+                    navigateToDetails(searchQuery.toInt())
+                })
+
             )
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()

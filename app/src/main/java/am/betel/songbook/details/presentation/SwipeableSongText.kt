@@ -17,24 +17,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun SwipeableSongText(
+    modifier: Modifier,
     words: String,
     appTheme: AppTheme,
     fontSize: Float = 16f,
     onNextSong: () -> Unit,
     onPrevSong: () -> Unit,
 ) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     var totalDrag by remember { mutableFloatStateOf(0f) }
-
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .heightIn(min = 200.dp, max = 1500.dp)
+            .heightIn(min = screenHeight, max = 1500.dp)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(onDragEnd = {
                     when {

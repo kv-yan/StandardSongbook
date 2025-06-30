@@ -11,7 +11,8 @@ val detailsPresentationModule = module {
             getSongByIndexUseCase = get(),
             addToFavoritesUseCaseImpl = get(),
             removeFromFavoritesUseCase = get(),
-            isFavoriteUseCase = get()
+            isFavoriteUseCase = get(),
+            shareRepository = get()
         )
     }
 }

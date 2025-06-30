@@ -66,7 +66,7 @@ fun ThemeItem(
     onClick: (AppTheme) -> Unit,
 ) {
     Card(
-        modifier = modifier.size(width = 90.dp, height = 80.dp),
+        modifier = modifier.size(width = 90.dp, height = 100.dp),
         colors = CardDefaults.cardColors(
             containerColor = appTheme.backgroundColor
         ),

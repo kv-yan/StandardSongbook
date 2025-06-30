@@ -2,6 +2,7 @@ package am.betel.songbook.search.presentation
 
 import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
+import am.betel.songbook.common.presentation.component.inputFeald.AppInputField
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songbook.common.presentation.ui.theme.Shape16
 import androidx.compose.foundation.background
@@ -20,11 +21,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -91,42 +90,13 @@ fun SearchScreen(
             Column(
                 modifier = Modifier.padding(innerPadding)
             ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    value = searchQuery,
-                    onValueChange = viewModel::setSearchQuery,
-                    shape = Shape16,
-                    singleLine = true,
-                    textStyle = TextStyle(fontFamily = FontRegular),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Search,
-                        keyboardType = KeyboardType.Text,
-                    ),
-                    keyboardActions = KeyboardActions(onSearch = {
-                        viewModel.onSearchClick()
-                    }),
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = appTheme.primaryTextColor,
-                        unfocusedTextColor = appTheme.primaryTextColor,
-                        focusedContainerColor = appTheme.backgroundColor,
-                        unfocusedContainerColor = appTheme.backgroundColor,
-                        focusedIndicatorColor = appTheme.primaryColor,
-                        unfocusedIndicatorColor = appTheme.unfocusedColor,
-                        focusedTrailingIconColor = appTheme.unfocusedColor,
-                        unfocusedTrailingIconColor = appTheme.unfocusedColor,
-                        focusedLabelColor = appTheme.primaryColor,
-                        unfocusedLabelColor = appTheme.primaryTextColor,
-                        cursorColor = appTheme.primaryColor,
 
-                    ),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.search_by_words),
-                            style = TextStyle(fontFamily = FontRegular)
-                        )
-                    },
+                AppInputField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = stringResource(R.string.search_by_words),
+                    searchQuery = searchQuery,
+                    appTheme = appTheme,
+                    onValueChange = viewModel::setSearchQuery,
                     trailingIcon = {
                         TextButton(
                             enabled = searchQuery.isNotEmpty(),
@@ -137,7 +107,18 @@ fun SearchScreen(
                             onClick = { viewModel.onSearchClick() }) {
                             Text(text = stringResource(R.string.search))
                         }
-                    })
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Search,
+                        keyboardType = KeyboardType.Text,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            viewModel.onSearchClick()
+                        }
+                    )
+                )
+
                 if (nothingFounded) {
                     Text(
                         modifier = Modifier

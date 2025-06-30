@@ -1,5 +1,6 @@
 package am.betel.songbook.details.presentation
 
+import am.betel.share.domain.repository.ShareRepository
 import am.betel.songbook.R
 import am.betel.songbook.bookmark.domain.usecase.AddToFavoritesUseCase
 import am.betel.songbook.bookmark.domain.usecase.IsFavoriteUseCase
@@ -7,6 +8,7 @@ import am.betel.songbook.bookmark.domain.usecase.RemoveFromFavoritesUseCase
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.details.domain.usecase.GetSongByIndexUseCase
 import am.betel.songs.domain.model.Song
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -22,6 +24,7 @@ class DetailsViewModel(
     private val addToFavoritesUseCaseImpl: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
     private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val shareRepository: ShareRepository
 ) : ViewModel() {
 
     companion object {
@@ -67,6 +70,21 @@ class DetailsViewModel(
         }
     }
 
+    fun loadSongByIndex(index: Int, onSnackbarShowed: (SnackbarState) -> Unit, onLoadComplete: () -> Unit = {}) {
+        _currentIndex.value = index
+        if (index < MIN_INDEX || index > MAX_INDEX) {
+            onSnackbarShowed(
+                SnackbarState.Error(
+                    _message = R.string.no_song_found_by_number,
+                    _icon = R.drawable.ic_error
+                )
+            )
+        }else{
+            getSongByIndex(index)
+            onLoadComplete()
+        }
+    }
+
     fun toggleFavorite(onSnackbarShowed: (SnackbarState) -> Unit) {
         val song = _currentSong.value ?: return
 
@@ -99,5 +117,10 @@ class DetailsViewModel(
         favoriteJob = isFavoriteUseCase(song).onEach {
             _isFavorite.value = it
         }.launchIn(viewModelScope)
+    }
+
+    fun shareSong(context: Context) {
+        val song = _currentSong.value ?: return
+        shareRepository.shareText(context, song.getWords())
     }
 }

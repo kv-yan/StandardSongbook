@@ -17,5 +17,6 @@
     <string name="song_unmarked">Էջանշումը հանվել է</string>
     <string name="font_size_controller_text">Ա</string>
     <string name="change_font_size">Փոխեք տառաչափը։</string>
+    <string name="enter_next_song_index">Գրեք հաջորդ երգի համարը</string>
 
 </resources>

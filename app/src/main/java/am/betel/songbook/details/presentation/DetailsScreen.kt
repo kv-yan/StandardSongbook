@@ -7,8 +7,8 @@ import am.betel.songbook.R
 import am.betel.songbook.common.presentation.component.snackbar.SnackbarState
 import am.betel.songbook.common.presentation.ui.theme.FontBold
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
+import am.betel.songbook.details.presentation.component.popap.LoadNextSongDialog
 import am.betel.songs.data.helper.getTitle
-import android.text.Html
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +31,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -54,8 +58,10 @@ fun DetailsScreen(
     val currentSongs by viewModel.currentSongs.collectAsState()
     val currentFontSize by settingsViewModel.fontSize.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
+    var isLoadSongDialogVisible by remember { mutableStateOf(false) }
     val bottomSheetExpanded = remember { mutableStateOf(false) }
     val themes by settingsViewModel.availableThemes.collectAsState()
+    val context = LocalContext.current
 
     val verticalScrollState = rememberScrollState()
     Scaffold(
@@ -79,12 +85,36 @@ fun DetailsScreen(
                         onClick = onBackClick
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_back),
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = null,
                             tint = appTheme.primaryColor
                         )
                     }
                 }, actions = {
+
+                    IconButton(
+                        onClick = {
+                            isLoadSongDialogVisible = true
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_load_next_song),
+                            contentDescription = null,
+                            tint = appTheme.primaryColor
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            viewModel.shareSong(context)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Share,
+                            contentDescription = null,
+                            tint = appTheme.primaryColor
+                        )
+                    }
 
                     IconButton(
                         onClick = {
@@ -129,16 +159,16 @@ fun DetailsScreen(
                 color = appTheme.primaryTextColor
             )
 
-            val words =
-                Html.fromHtml(currentSongs?.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
-
-            SwipeableSongText(
-                words = words,
-                appTheme = appTheme,
-                fontSize = currentFontSize,
-                onNextSong = viewModel::loadNextSong,
-                onPrevSong = viewModel::loadPrevSong
-            )
+            currentSongs?.getWords()?.let { it1 ->
+                SwipeableSongText(
+                    modifier = modifier,
+                    words = it1,
+                    appTheme = appTheme,
+                    fontSize = currentFontSize,
+                    onNextSong = viewModel::loadNextSong,
+                    onPrevSong = viewModel::loadPrevSong
+                )
+            }
         }
     }
 
@@ -151,4 +181,20 @@ fun DetailsScreen(
         onFontSizeDecrease = settingsViewModel::decrement,
         onThemeChange = settingsViewModel::setUiSetting
     )
+
+    if (isLoadSongDialogVisible) {
+        LoadNextSongDialog(
+            theme = appTheme,
+            onDismiss = { isLoadSongDialogVisible = false },
+            onConfirm = {
+                viewModel.loadSongByIndex(
+                    index = it,
+                    onSnackbarShowed = onSnackbarShowed,
+                    onLoadComplete = {
+                        isLoadSongDialogVisible = false
+                    }
+                )
+            }
+        )
+    }
 }

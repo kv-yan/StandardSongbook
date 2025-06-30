@@ -80,12 +80,7 @@ fun SettingsBottomSheet(
             }
 
             ThemeController(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 16.dp,
-                        bottom = 24.dp
-                    ),
+                modifier = Modifier.fillMaxWidth(),
                 currentTheme = appTheme,
                 availableThemes = themes,
                 onClick = onThemeChange

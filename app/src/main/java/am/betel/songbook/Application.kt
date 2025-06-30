@@ -2,6 +2,7 @@ package am.betel.songbook
 
 import am.betel.settings.data.di.settingsDataModule
 import am.betel.settings.presentation.di.settingsPresentationModule
+import am.betel.share.data.di.shareDataModule
 import am.betel.songbook.bookmark.data.di.bookmarkDataModule
 import am.betel.songbook.bookmark.presentation.di.bookmarkPresentationModule
 import am.betel.songbook.details.data.di.detailsDataModule
@@ -35,7 +36,8 @@ class Application : Application() {
                 searchPresentationModule,
                 searchDataModule,
                 settingsPresentationModule,
-                settingsDataModule
+                settingsDataModule,
+                shareDataModule,
             )
         }
 

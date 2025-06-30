@@ -4,7 +4,6 @@ import am.betel.settings.domain.model.AppTheme
 import am.betel.songbook.R
 import am.betel.songbook.common.presentation.ui.theme.FontRegular
 import am.betel.songs.domain.model.Song
-import android.text.Html
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,8 +34,6 @@ fun BookmarkedSongItem(
     onClick: (Int) -> Unit = {},
     onRemoveClick: (Int) -> Unit = {},
 ) {
-    val words =
-        Html.fromHtml(song.songWords, Html.FROM_HTML_MODE_COMPACT).toString()
 
     Row(modifier = modifier.clickable { onClick(song.id) }) {
         Box(
@@ -68,7 +65,7 @@ fun BookmarkedSongItem(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = words,
+                text = song.getWords(),
                 fontFamily = FontRegular,
                 maxLines = 2,
                 fontSize = 15.sp,
